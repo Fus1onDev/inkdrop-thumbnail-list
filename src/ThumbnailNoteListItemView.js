@@ -4,7 +4,6 @@ import { useCallback } from 'react'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import classNames from 'classnames'
-import removeMd from 'remove-markdown'
 const matter = require('gray-matter')
 
 dayjs.extend(relativeTime)
@@ -32,9 +31,9 @@ export default function ThumbnailNoteListItemView(props) {
   } = note
 
   const {content, data} = matter(body)
-  const plainBody = removeMd(content)
 
-  const match = body.match(/.*<img .*src="(.*[^\"])".*>.*|\!\[.*]\( *([^ ]+) *(?:[ ]+"[^"]*")?\)/)
+  // const match = body.match(/.*<img .*src="(.*[^\"])".*>.*|\!\[.*]\( *([^ ]+) *(?:[ ]+"[^"]*")?\)/)
+  const match = body.match(/!\[[^\]]*\]\((?<filename>.*?)(?=\"|\))(?<optionalpart>\".*\")?\)/)
   
   let imageUrl = data[inkdrop.config.get('thumbnail-list.keyName') ?? "thumbnail"]
 
@@ -117,7 +116,7 @@ export default function ThumbnailNoteListItemView(props) {
             )}
             <TagList tagIds={tags} />
           </div>
-          <span className="text">{plainBody}</span>
+          {/* <span className="text">{plainBody}</span> */}
         </div>
       </div>
       {ThumbnailView()}
